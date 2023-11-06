@@ -3,25 +3,39 @@ let buttons = document.querySelectorAll('button');
 
 let string = "";
 let arr = Array.from(buttons);
-console.log(arr)
+console.log(arr);
 arr.forEach(button => {
-    button.addEventListener('click', (e) =>{
-        if(e.target.innerHTML == '='){
-            string = eval(string);
-            input.value = string;
-        }
-
-        else if(e.target.innerHTML == 'AC'){
+    button.addEventListener('click', (e) => {
+        if (e.target.innerHTML == '=') {
+            
+            if (string.includes('%')) {
+                
+                const parts = string.split('%');
+                if (parts.length === 2) {
+                    
+                    const number = parseFloat(parts[0]);
+                    string = (number / 100) * parseFloat(parts[1]);
+                    input.value = string;
+                } else {
+                    input.value = 'Error';
+                }
+            } else {
+                try {
+                    string = eval(string);
+                    input.value = string;
+                } catch (error) {
+                    input.value = 'Error';
+                }
+            }
+        } else if (e.target.innerHTML == 'AC') {
             string = "";
             input.value = string;
-        }
-        else if(e.target.innerHTML == 'DEL'){
-            string = string.substring(0, string.length-1);
+        } else if (e.target.innerHTML == 'DEL') {
+            string = string.substring(0, string.length - 1);
             input.value = string;
-        }
-        else{
+        } else {
             string += e.target.innerHTML;
             input.value = string;
         }
     })
-})
+});
